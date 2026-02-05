@@ -24,7 +24,7 @@ const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
+    // GatewayIntentBits.MessageContent,
   ],
 });
 
@@ -40,10 +40,10 @@ client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}`);
 });
 
-client.on("messageCreate", (message) => {
-  if (message.author.bot) return;
-  if (message.content === "hello") message.reply("Hello!");
-});
+//client.on("messageCreate", (message) => {
+//  if (message.author.bot) return;
+//  if (message.content === "hello") message.reply("Hello!");
+//});
 
 (async () => {
   const token = process.env.DISCORD_TOKEN;
