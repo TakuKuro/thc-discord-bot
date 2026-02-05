@@ -94,13 +94,6 @@ const client = new Client({
 process.on("unhandledRejection", (e) => console.error("unhandledRejection:", e));
 process.on("uncaughtException", (e) => console.error("uncaughtException:", e));
 
-const client = new Client({
-  intents: [GatewayIntentBits.Guilds], // スラッシュ＋モーダル運用ならこれで足りる
-});
-
-process.on("unhandledRejection", (e) => console.error("unhandledRejection:", e));
-process.on("uncaughtException", (e) => console.error("uncaughtException:", e));
-
 client.once("ready", async () => {
   console.log(`Logged in as ${client.user.tag}`);
 
