@@ -1,6 +1,14 @@
 require("dotenv").config();
 const express = require("express");
-const { Client, GatewayIntentBits } = require("discord.js");
+
+const {
+  Client,
+  GatewayIntentBits,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  ActionRowBuilder,
+} = require("discord.js");
 
 // ---- Render向け: HTTPサーバ ----
 const app = express();
@@ -46,15 +54,62 @@ client.on("messageCreate", (message) => {
 });
 
 client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
+  // /daily（スラッシュ）
+  if (interaction.isChatInputCommand() && interaction.commandName === "daily") {
+    const modal = new ModalBuilder()
+      .setCustomId("dailyModal")
+      .setTitle("日報");
 
-  if (interaction.commandName === "daily") {
+    const todayInput = new TextInputBuilder()
+      .setCustomId("today")
+      .setLabel("今日やったこと")
+      .setStyle(TextInputStyle.Paragraph)
+      .setRequired(true);
+
+    const reflectionInput = new TextInputBuilder()
+      .setCustomId("reflection")
+      .setLabel("所感・学び")
+      .setStyle(TextInputStyle.Paragraph)
+      .setRequired(false);
+
+    const tomorrowInput = new TextInputBuilder()
+      .setCustomId("tomorrow")
+      .setLabel("明日やること")
+      .setStyle(TextInputStyle.Paragraph)
+      .setRequired(false);
+
+    modal.addComponents(
+      new ActionRowBuilder().addComponents(todayInput),
+      new ActionRowBuilder().addComponents(reflectionInput),
+      new ActionRowBuilder().addComponents(tomorrowInput)
+    );
+
+    await interaction.showModal(modal);
+    return;
+  }
+
+  // モーダル送信時
+  if (interaction.isModalSubmit() && interaction.customId === "dailyModal") {
+    const today = interaction.fields.getTextInputValue("today");
+    const reflection = interaction.fields.getTextInputValue("reflection");
+    const tomorrow = interaction.fields.getTextInputValue("tomorrow");
+
+    // まずはログ（次でDBにする）
+    console.log("DAILY REPORT", {
+      user: interaction.user.tag,
+      today,
+      reflection,
+      tomorrow,
+      at: new Date().toISOString(),
+    });
+
     await interaction.reply({
-      content: "日報コマンドを受け取った（次はモーダル）",
+      content: "日報を受け取りました。",
       ephemeral: true,
     });
   }
 });
+
 
 
 (async () => {
