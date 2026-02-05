@@ -13,7 +13,10 @@ if (!token || !clientId || !guildId) {
 const commands = [
   new SlashCommandBuilder()
     .setName("daily")
-    .setDescription("日報を提出する（まずはテスト）"),
+    .setDescription("日報を提出する"),
+  new SlashCommandBuilder()
+    .setName("reminddaily")
+    .setDescription("【手動】日報リマインドを送信する"),
 ].map((c) => c.toJSON());
 
 const rest = new REST({ version: "10" }).setToken(token);
@@ -21,9 +24,7 @@ const rest = new REST({ version: "10" }).setToken(token);
 (async () => {
   try {
     console.log("Registering guild commands...");
-    await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
-      body: commands,
-    });
+    await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
     console.log("Done.");
   } catch (e) {
     console.error(e);
