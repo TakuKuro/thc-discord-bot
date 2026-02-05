@@ -45,6 +45,18 @@ client.on("messageCreate", (message) => {
   if (message.content === "hello") message.reply("Hello!");
 });
 
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === "daily") {
+    await interaction.reply({
+      content: "日報コマンドを受け取った（次はモーダル）",
+      ephemeral: true,
+    });
+  }
+});
+
+
 (async () => {
   const token = process.env.DISCORD_TOKEN;
 
