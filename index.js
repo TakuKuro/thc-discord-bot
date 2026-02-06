@@ -180,8 +180,13 @@ client.once("ready", async () => {
 
 client.on("messageCreate", (message) => {
   if (message.author.bot) return;
-  if (message.content === "hello") message.reply("Hello!");
   if (message.content === "山") message.reply("川");
+  if (message.content === "ああ言えば") message.reply("こう言う");
+  if (message.content === "そうだね") message.reply("それな");
+  if (message.content === "ありがとう") message.reply("僕からもありがとう！");
+  if (message.content === "ありがとう！") message.reply("僕からもありがとう！");
+  if (message.content === "ありがとう！！") message.reply("僕からもありがとう！");
+  if (message.content === "ありがとう！！！") message.reply("僕からもありがとう！");
 });
 
 client.on("interactionCreate", async (interaction) => {
