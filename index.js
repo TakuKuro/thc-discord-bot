@@ -120,14 +120,14 @@ async function postDailyToChannel(client, channelId, data) {
   }
 
   const embed = new EmbedBuilder()
-    .setTitle(`日報（${data.dateKey}）`)
+    .setTitle(`--日報（${data.dateKey}）--`)
     .addFields(
-      { name: "提出者", value: data.displayName, inline: true },
-      { name: "セクション", value: data.sectionLabel, inline: true },
-      { name: "稼働時間", value: `${data.minutes} 分`, inline: true },
-      { name: "主な作業内容", value: data.work || "（未記入）" },
-      ...(data.condition ? [{ name: "コンディション", value: data.condition }] : []),
-      ...(data.comment ? [{ name: "コメント", value: data.comment }] : [])
+      { name: "【提出者】", value: data.displayName, inline: true },
+      { name: "【セクション】", value: data.sectionLabel, inline: true },
+      { name: "【稼働時間】", value: `${data.minutes} 分`, inline: true },
+      { name: "【主な作業内容】", value: data.work || "（未記入）" },
+      ...(data.condition ? [{ name: "【コンディション】", value: data.condition }] : []),
+      ...(data.comment ? [{ name: "【コメント】", value: data.comment }] : [])
     )
     .setTimestamp(new Date(data.submittedAt));
 
