@@ -161,12 +161,11 @@ client.once("ready", async () => {
   const tick = async () => {
     const { hh, mm, dateKey } = getJstDateParts();
 
-    if (hh === 22 && mm === 0 && lastSentKey !== dateKey) {
+    if (hh === 23 && mm === 30 && lastSentKey !== dateKey) {
       lastSentKey = dateKey;
       try {
-        // await sendDailyReminder(client, channelId, dateKey);
-        // console.log("Reminder sent:", dateKey);
-        console.log("リマインダー保留中", datekey);
+        await sendDailyReminder(client, channelId, dateKey);
+        console.log("Reminder sent:", dateKey);
       } catch (e) {
         console.error("Failed to send reminder:", e);
       }
