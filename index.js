@@ -161,7 +161,7 @@ client.once("ready", async () => {
   const tick = async () => {
     const { hh, mm, dateKey } = getJstDateParts();
 
-    if (hh === 23 && mm === 30 && lastSentKey !== dateKey) {
+    if (hh === 22 && mm === 0 && lastSentKey !== dateKey) {
       lastSentKey = dateKey;
       try {
         await sendDailyReminder(client, channelId, dateKey);
