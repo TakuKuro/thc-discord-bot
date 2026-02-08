@@ -409,4 +409,6 @@ if (!token) {
   console.error("DISCORD_TOKEN is missing.");
   process.exit(1);
 }
-client.login(token);
+client.login(token)
+  .then(() => console.log("Discord login OK"))
+  .catch(e => console.error("Discord login failed:", e));
