@@ -412,6 +412,17 @@ if (!token) {
   process.exit(1);
 }
 
+const dns = require("node:dns").promises;
+
+(async () => {
+  try {
+    const r = await dns.lookup("discord.com");
+    console.log("DNS lookup discord.com:", r);
+  } catch (e) {
+    console.error("DNS lookup failed:", e);
+  }
+})();
+
 console.log("About to login. token length =", token.length);
 
 client.login(token)
