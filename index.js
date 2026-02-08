@@ -2,6 +2,8 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
+console.log("BOOT MARKER v2026-02-09 02:xx JST");
+
 const express = require("express");
 
 const {
@@ -230,7 +232,7 @@ client.on("interactionCreate", async (interaction) => {
         { label: "脚本", value: "script" },
         { label: "演出(稽古外)", value: "direction" },
         { label: "企画制作", value: "productionmanage" },
-        { label: "主宰", value: "predident" },
+        { label: "主宰", value: "president" },
         { label: "その他", value: "other" }
         );
 
@@ -409,6 +411,9 @@ if (!token) {
   console.error("DISCORD_TOKEN is missing.");
   process.exit(1);
 }
+
+console.log("About to login. token length =", token.length);
+
 client.login(token)
   .then(() => console.log("Discord login OK"))
   .catch(e => console.error("Discord login failed:", e));
