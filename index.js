@@ -425,6 +425,67 @@ const dns = require("node:dns").promises;
 
 console.log("About to login. token length =", token.length);
 
-client.login(token)
+(async () => {
+  try {
+    const r = await fetch("https://discord.com/api/v10/gateway");
+    console.log("gateway http status:", r.status);
+    const j = await r.json();
+    console.log("gateway url:", j.url);
+  } catch (e) {
+    console.error("gateway http failed:", e);
+  }
+})();
+
+const WebSocket = require("ws");
+
+(async () => {
+  try {
+    const r = await fetch("https://discord.com/api/v10/gateway");
+    const { url } = await r.json();
+    const wsUrl = `${url}?v=10&encoding=json`;
+    console.log("trying ws:", wsUrl);
+
+    const ws = new WebSocket(wsUrl);
+    const t = setTimeout(() => {
+      console.error("ws timeout (10s)");
+      ws.terminate();
+    }, 10_000);
+
+    ws.on("open", () => console.log("ws open"));
+    ws.on("message", (data) => {
+      console.log("ws message(head):", data.toString().slice(0, 120));
+      clearTimeout(t);
+      ws.close();
+    });
+    ws.on("error", (e) => {
+      clearTimeout(t);
+      console.error("ws error:", e);
+    });
+    ws.on("close", (code) => {
+      clearTimeout(t);
+      console.log("ws close:", code);
+    });
+  } catch (e) {
+    console.error("ws probe failed:", e);
+  }
+})();
+
+
+setTimeout(() => {
+  console.error("LOGIN TIMEOUT: still not ready after 20s");
+}, 20_000);
+
+client.on("debug", (m) => console.log("[debug]", m));
+client.on("warn", (m) => console.warn("[warn]", m));
+
+const loginPromise = client.login(token);
+const timeout = new Promise((_, reject) =>
+  setTimeout(() => reject(new Error("login timeout (20s)")), 20_000)
+);
+
+Promise.race([loginPromise, timeout])
   .then(() => console.log("Discord login OK"))
-  .catch(e => console.error("Discord login failed:", e));
+  .catch((e) => {
+    console.error("Discord login failed:", e);
+    process.exit(1);
+  });
